@@ -1,0 +1,63 @@
+# 核心框架
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# 日志处理
+loguru>=0.7.0
+
+# 异步文件操作
+aiofiles>=23.0.0
+
+# HTTP 请求
+requests>=2.31.0
+
+# PDF 处理 - 现代化库
+pdf2docx>=0.5.8
+pdfplumber>=0.9.0
+pymupdf>=1.23.0
+PyPDF2>=3.0.0
+
+# 图像处理
+pdf2image>=1.16.0
+Pillow>=9.0.0
+
+# OCR 处理
+pytesseract>=0.3.10
+
+# Office 文档处理
+python-docx>=0.8.11
+openpyxl>=3.1.0
+python-pptx>=0.6.21
+
+# Markdown 处理
+weasyprint>=60.0
+markdown>=3.5.0
+
+# HTML 处理
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# 数据处理
+numpy>=1.24.0
+
+# 系统工具
+python-magic>=0.4.27
+psutil>=5.9.0
+
+# 日志和工具
+python-json-logger>=2.0.7
+pydantic>=2.5.0
+
+# 测试工具
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# 代码质量工具
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
+
+# 可选：Redis 和 Celery (用于生产环境)
+# redis>=4.5.0
+# celery>=5.3.0 

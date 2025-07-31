@@ -1,0 +1,30 @@
+"""
+配置模块
+"""
+from .settings import *
+
+__all__ = [
+    'BASE_DIR',
+    'TEMP_DIR',
+    'OUTPUT_DIR',
+    'MAX_FILE_SIZE',
+    'ALLOWED_EXTENSIONS',
+    'SUPPORTED_CONVERSIONS',
+    'CONVERSION_OPTIONS',
+    'HOST',
+    'PORT',
+    'DEBUG',
+    'LOG_LEVEL',
+    'LOG_FILE',
+    'SECRET_KEY',
+    'ACCESS_TOKEN_EXPIRE_MINUTES',
+    'DATABASE_URL',
+    'TESSERACT_PATH',
+    'POPPLER_PATH',
+    'CACHE_TTL',
+    'REDIS_URL',
+    'CELERY_BROKER_URL',
+    'CELERY_RESULT_BACKEND',
+    'TEMP_FILE_RETENTION_HOURS',
+    'OUTPUT_FILE_RETENTION_HOURS'
+] 
