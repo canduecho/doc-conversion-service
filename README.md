@@ -312,7 +312,7 @@ This project is licensed under AGPL-3.0 License - see the [LICENSE](LICENSE) fil
 
 ## Contact
 
-- Project Maintainer: [Your Name]
+- Project Maintainer: [canduecho]
 - Email: [canduecho@gmail.com]
 - Project Link: [https://github.com/canduecho/doc-conversion-service]
 
