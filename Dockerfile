@@ -51,9 +51,6 @@ COPY . .
 # 创建必要的目录
 RUN mkdir -p /app/uploads /app/downloads /app/temp /app/logs /app/outputs
 
-# 设置权限
-RUN chmod +x /app/start.sh
-
 # 暴露端口
 EXPOSE 8000
 
