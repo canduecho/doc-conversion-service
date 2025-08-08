@@ -268,8 +268,8 @@ docker build -t xxxxx/library/wcl/doc-conversion-service .
 docker push xxxxx/library/wcl/doc-conversion-service:latest
 
 # Using Podman (if needed)
-podman build -t 132.148.160.89/library/wcl/doc-conversion-service:latest .
-podman push --tls-verify=false 132.148.160.89/library/wcl/doc-conversion-service:latest
+podman build -t XXXX/library/wcl/doc-conversion-service:latest .
+podman push --tls-verify=false XXXX/library/wcl/doc-conversion-service:latest
 ```
 
 ## Monitoring and Logging
