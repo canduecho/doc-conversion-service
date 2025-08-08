@@ -5,6 +5,21 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
+# 加载 .env 文件
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    # 如果没有 python-dotenv，尝试手动加载
+    env_file = Path(__file__).resolve().parent.parent.parent / '.env'
+    if env_file.exists():
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    os.environ[key] = value
+
 # 项目根目录
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -34,15 +49,15 @@ ALLOWED_EXTENSIONS = {
     'image': ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'webp']
 }
 
-# 支持的转换格式 (基于 LibreOffice 能力优化)
+# 支持的转换格式 (基于 LibreOffice 能力优化 + 跨类型转换)
 SUPPORTED_CONVERSIONS = {
     # LibreOffice 支持的转换 (包括图片输出)
     'doc': ['pdf', 'docx', 'odt', 'rtf', 'html', 'jpg', 'png', 'gif'],
-    'docx': ['pdf', 'doc', 'odt', 'rtf', 'html', 'jpg', 'png', 'gif'],
+    'docx': ['pdf', 'doc', 'odt', 'rtf', 'html', 'jpg', 'png', 'gif', 'xlsx', 'pptx'],  # 支持跨类型转换
     'xls': ['pdf', 'xlsx', 'ods', 'html', 'jpg', 'png', 'gif'],
-    'xlsx': ['pdf', 'xls', 'ods', 'html', 'jpg', 'png', 'gif'],
+    'xlsx': ['pdf', 'xls', 'ods', 'html', 'jpg', 'png', 'gif', 'docx', 'pptx'],         # 支持跨类型转换
     'ppt': ['pdf', 'pptx', 'odp', 'html', 'jpg', 'png', 'gif'],
-    'pptx': ['pdf', 'ppt', 'odp', 'html', 'jpg', 'png', 'gif'],
+    'pptx': ['pdf', 'ppt', 'odp', 'html', 'jpg', 'png', 'gif', 'docx', 'xlsx'],         # 支持跨类型转换
     'odt': ['pdf', 'docx', 'doc', 'rtf', 'html', 'jpg', 'png', 'gif'],
     'ods': ['pdf', 'xlsx', 'xls', 'html', 'jpg', 'png', 'gif'],
     'odp': ['pdf', 'pptx', 'ppt', 'html', 'jpg', 'png', 'gif'],
@@ -57,15 +72,15 @@ SUPPORTED_CONVERSIONS = {
     'md': ['pdf', 'docx', 'xlsx', 'pptx'],
     'markdown': ['pdf', 'docx', 'xlsx', 'pptx'],
     
-    # 图片转换
-    'jpg': ['pdf', 'png', 'gif', 'bmp', 'tiff'],
-    'jpeg': ['pdf', 'png', 'gif', 'bmp', 'tiff'],
-    'png': ['pdf', 'jpg', 'gif', 'bmp', 'tiff'],
-    'gif': ['pdf', 'jpg', 'png', 'bmp', 'tiff'],
-    'bmp': ['pdf', 'jpg', 'png', 'gif', 'tiff'],
-    'tiff': ['pdf', 'jpg', 'png', 'gif', 'bmp'],
-    'tif': ['pdf', 'jpg', 'png', 'gif', 'bmp'],
-    'webp': ['pdf', 'jpg', 'png', 'gif', 'bmp']
+    # 图片转换 (包括转 Office 格式)
+    'jpg': ['pdf', 'png', 'gif', 'bmp', 'tiff', 'docx', 'pptx', 'xlsx'],
+    'jpeg': ['pdf', 'png', 'gif', 'bmp', 'tiff', 'docx', 'pptx', 'xlsx'],
+    'png': ['pdf', 'jpg', 'gif', 'bmp', 'tiff', 'docx', 'pptx', 'xlsx'],
+    'gif': ['pdf', 'jpg', 'png', 'bmp', 'tiff', 'docx', 'pptx', 'xlsx'],
+    'bmp': ['pdf', 'jpg', 'png', 'gif', 'tiff', 'docx', 'pptx', 'xlsx'],
+    'tiff': ['pdf', 'jpg', 'png', 'gif', 'bmp', 'docx', 'pptx', 'xlsx'],
+    'tif': ['pdf', 'jpg', 'png', 'gif', 'bmp', 'docx', 'pptx', 'xlsx'],
+    'webp': ['pdf', 'jpg', 'png', 'gif', 'bmp', 'docx', 'pptx', 'xlsx']
 }
 
 # 转换选项配置
@@ -80,7 +95,7 @@ CONVERSION_OPTIONS = {
 
 # 服务器配置
 HOST = os.getenv('HOST', '0.0.0.0')
-PORT = int(os.getenv('PORT', 8000))
+PORT = int(os.getenv('PORT', 8008))
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 # 日志配置

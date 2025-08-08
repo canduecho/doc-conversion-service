@@ -15,6 +15,7 @@ from app.converters.pdf_converter import PDFConverter
 from app.converters.image_converter import ImageConverter
 from app.converters.document_to_image_converter import DocumentToImageConverter
 from app.converters.markdown_converter import MarkdownConverter
+from app.converters.cross_type_converter import CrossTypeConverter
 
 
 class ConversionService:
@@ -28,6 +29,7 @@ class ConversionService:
         self.image_converter = ImageConverter()
         self.document_to_image_converter = DocumentToImageConverter()
         self.markdown_converter = MarkdownConverter()
+        self.cross_type_converter = CrossTypeConverter()
         
         # 转换器映射
         self.converter_mapping = {
@@ -35,7 +37,8 @@ class ConversionService:
             'pdf': self.pdf_converter,
             'image': self.image_converter,
             'document_to_image': self.document_to_image_converter,
-            'markdown': self.markdown_converter
+            'markdown': self.markdown_converter,
+            'cross_type': self.cross_type_converter
         }
     
     async def convert(
@@ -114,6 +117,10 @@ class ConversionService:
     
     def _select_converter(self, input_ext: str, target_format: str):
         """选择转换器"""
+        # 跨类型转换检查
+        if self._is_cross_type_conversion(input_ext, target_format):
+            return self.cross_type_converter
+        
         # Markdown 转换
         if input_ext in ['md', 'markdown']:
             return self.markdown_converter
@@ -141,6 +148,16 @@ class ConversionService:
         
         return None
     
+    def _is_cross_type_conversion(self, input_ext: str, target_format: str) -> bool:
+        """检查是否为跨类型转换"""
+        cross_type_conversions = {
+            'docx': ['xlsx', 'pptx'],
+            'xlsx': ['docx', 'pptx'],
+            'pptx': ['docx', 'xlsx']
+        }
+        return (input_ext in cross_type_conversions and 
+                target_format in cross_type_conversions[input_ext])
+    
     async def _execute_conversion(
         self,
         converter,
@@ -167,11 +184,30 @@ class ConversionService:
                         input_path, output_path, target_format, options
                     )
             elif isinstance(converter, ImageConverter):
-                return await converter.image_to_image(
-                    input_path, output_path, target_format, options
-                )
+                # 根据目标格式选择合适的方法
+                if target_format in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'webp']:
+                    return await converter.image_to_image(
+                        input_path, output_path, target_format, options
+                    )
+                elif target_format == 'pdf':
+                    return await converter.image_to_pdf(
+                        input_path, output_path, options
+                    )
+                elif target_format in ['docx', 'pptx', 'xlsx']:
+                    return await converter.image_to_office(
+                        input_path, output_path, target_format, options
+                    )
+                else:
+                    return {
+                        'success': False,
+                        'error': f'图片转换器不支持的目标格式: {target_format}'
+                    }
             elif hasattr(converter, 'convert_to_image'):  # DocumentToImageConverter
                 return await converter.convert_to_image(
+                    input_path, output_path, target_format, options
+                )
+            elif hasattr(converter, 'convert_cross_type'):  # CrossTypeConverter
+                return await converter.convert_cross_type(
                     input_path, output_path, target_format, options
                 )
             elif hasattr(converter, 'markdown_to_pdf'):  # MarkdownConverter

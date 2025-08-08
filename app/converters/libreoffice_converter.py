@@ -185,7 +185,7 @@ class LibreOfficeConverter:
     
     def _is_format_supported(self, input_ext: str, output_ext: str) -> bool:
         """检查格式是否支持"""
-        # 定义支持的转换
+        # 定义支持的转换（LibreOffice 原生支持）
         supported_conversions = {
             # Office 文档转换
             'doc': ['pdf', 'docx', 'odt', 'rtf', 'html', 'txt'],
@@ -376,7 +376,8 @@ class LibreOfficeConverter:
             'input_formats': ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 
                             'odt', 'ods', 'odp', 'rtf', 'html', 'txt'],
             'output_formats': ['pdf', 'docx', 'xlsx', 'pptx', 'odt', 'ods', 
-                             'odp', 'rtf', 'html', 'txt']
+                             'odp', 'rtf', 'html', 'txt'],
+            'note': 'LibreOffice 不支持跨文档类型的直接转换（如 docx→xlsx）'
         }
     
     def cleanup(self):
